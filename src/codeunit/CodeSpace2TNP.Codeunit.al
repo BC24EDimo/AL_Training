@@ -37,7 +37,13 @@ codeunit 50100 "CodeSpace_2TNP"
     var
         SalesHeader: Record "Sales Header";
         SalesLine: Record "Sales Line";
+        Customer: Record Customer;
     begin
+        SalesHeader.Reset();
+        SalesLine.Reset();
+        Customer.Reset();
+        Customer.SetFilter("No.", '');
+
         SalesHeader.Init();
         SalesHeader.Validate("Document Type", SalesHeader."Document Type"::Invoice);
         SalesHeader.Validate("Posting Date", Today);
@@ -121,7 +127,7 @@ codeunit 50100 "CodeSpace_2TNP"
     var
         AllCar: Record CarTNP;
         //Increment: Integer;
-        TempTableRec: Record "Temp Table" temporary;
+        TempTableRec: Record "Temp TableTNP" temporary;
     begin
         AllCar.SetRange(Brand, CarRec.Brand);
         if (AllCar.FindSet()) then
@@ -137,6 +143,7 @@ codeunit 50100 "CodeSpace_2TNP"
                     // AllCar.Modify(true);
                 end;
             until AllCar.Next() = 0;
+        //Binds TempTableRec to Worksheet
         Page.Run(Page::"Temp WorkSheetTNP", TempTableRec);
     end;
 

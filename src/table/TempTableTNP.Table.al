@@ -1,8 +1,8 @@
-table 50107 "Temp Table"
+table 50107 "Temp TableTNP"
 {
     Caption = 'Temp Table';
     DataClassification = ToBeClassified;
-    
+
     fields
     {
         field(1; Brand; Text[20])

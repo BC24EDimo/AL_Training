@@ -153,20 +153,41 @@ page 50100 "Car PageTNP"
                 trigger OnAction()
                 var
                     CarRec: Record CarTNP;
-                    List : List of [Text];
-                    ToBeSplit : Text;
+                //List: List of [Text];
+                //ToBeSplit: Text;
                 begin
                     // ToBeSplit := 'Name: Boy';
                     // List := ToBeSplit.Split(':');
                     // Message(List.Get(2));
-                    
+
                     CarRec.Reset();
                     //CarRec.SetRange(VIN, rec.VIN);
+
                     Report.Run(50111, true, false, CarRec);
+                end;
+            }
+
+            action(ProfitReport)
+            {
+                Promoted = true;
+                PromotedCategory = Report;
+                Image = Report2;
+                Caption = 'Profit Report';
+
+                trigger OnAction()
+                var
+                    HistoryRec: Record HistoryTNP;//: Record CarTNP;
+                    ProfitTableRec: Record "Profit TableTNP";
+                begin
+                    //PopulateTempTable(Rec.VIN);
+                    HistoryRec.Reset();
+                    HistoryRec.SetRange(VIN, Rec.VIN);
+                    Report.Run(50101, true, false, HistoryRec);
                 end;
             }
         }
     }
+
 
     trigger OnAfterGetCurrRecord()
     var
@@ -176,7 +197,68 @@ page 50100 "Car PageTNP"
         //CurrPage.Update();
     end;
 
-    //trigger 
+     
+    // procedure PopulateTempTable(vin: Code[20])
+    // var
+    //     HistoryRec: Record HistoryTNP;
+    //     ProfitTableRec: Record "Profit TableTNP" temporary;
+    // begin
+    //     HistoryRec.Reset();
+    //     HistoryRec.SetFilter(VIN, vin);
+    //     IF (HistoryRec.FindSet()) then begin
+    //         ProfitTableRec.Init();
+    //         ProfitTableRec.Validate("Entry no", 0);
+    //         repeat
+    //             if ((HistoryRec."Event Type" = HistoryRec."Event Type"::"Price Change") or
+    //             (HistoryRec."Event Type" = HistoryRec."Event Type"::MOT) or
+    //             (HistoryRec."Event Type" = HistoryRec."Event Type"::Purchase) or
+    //             (HistoryRec."Event Type" = HistoryRec."Event Type"::Sale) or
+    //             (HistoryRec."Event Type" = HistoryRec."Event Type"::Service)) then begin
+    //                 ProfitTableRec.Validate("Event", Format(HistoryRec."Event Type"));
+    //                 ProfitTableRec.Validate(VIN, vin);
+    //                 ProfitTableRec.Validate("Date of Entry", HistoryRec."Service Date");
+    //                 ProfitTableRec.Validate(Price, GetPrice(HistoryRec."Event Type", HistoryRec.Notes));
+    //                 ProfitTableRec.Insert(true);
+    //                 // "Event" := Format(HistoryRec."Event Type");
+    //                 // Price := GetPrice(HistoryRec."Event Type", HistoryRec.Notes);
+    //                 // DateOfEntry := HistoryRec."Service Date";
+    //             end;
+
+    //         until HistoryRec.Next() = 0
+    //     end;
+
+
+
+    // end;
+
+    procedure GetPrice(EventType: Enum "Event TypeTNP"; FilterText: Text): Decimal
+    var
+        Price: Decimal;
+        Items: List of [text];
+    begin
+        if (StrLen(FilterText) = 0) then
+            exit(0.00)
+
+        else
+            if (FilterText.Contains(':')) then begin
+                Items := FilterText.Split(':');
+                Evaluate(Price, Items.Get(2).Trim());
+                exit(AssignIntegerType(EventType, Price));
+            end;
+        exit(0.00);
+    end;
+
+    procedure AssignIntegerType(EventTypeTNP: Enum "Event TypeTNP"; value: Decimal): Decimal
+    begin
+        case EventTypeTNP of
+            EventTypeTNP::MOT, EventTypeTNP::Service, EventTypeTNP::Purchase:
+                exit(-1 * value);
+            EventTypeTNP::Sale, EventTypeTNP::"Price Change":
+                exit(value);
+
+        end;
+    end;
+
     var
         IncreaseRec: Codeunit CodeSpace_2TNP;
 }

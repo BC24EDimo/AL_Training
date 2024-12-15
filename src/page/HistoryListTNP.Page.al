@@ -5,7 +5,7 @@ page 50105 "History ListTNP"
     PageType = List;
     SourceTable = HistoryTNP;
     UsageCategory = Lists;
-    
+
 
     layout
     {
@@ -13,10 +13,6 @@ page 50105 "History ListTNP"
         {
             repeater(General)
             {
-                field(Description; Rec.Notes)
-                {
-                    ToolTip = 'Specifies the value of the Description field.', Comment = '%';
-                }
                 field("Entry No"; Rec."Entry No")
                 {
                     ToolTip = 'Specifies the value of the Entry No field.', Comment = '%';
@@ -25,8 +21,15 @@ page 50105 "History ListTNP"
                 {
                     ToolTip = 'Specifies the value of the VIN field.', Comment = '%';
                 }
-
+                field(Description; Rec.Notes)
+                {
+                    ToolTip = 'Specifies the value of the Description field.', Comment = '%';
+                }
                 field("Date Of Event"; Rec."Date Of Event")
+                {
+
+                }
+                field(Price; Rec.Price)
                 {
 
                 }

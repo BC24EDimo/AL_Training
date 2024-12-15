@@ -160,8 +160,8 @@ table 50102 CarTNP
             fieldclass = flowfield;
             CalcFormula = lookup(HistoryTNP."Service Date" WHERE(VIN = FIELD(VIN), "Event Type" = CONST(Sale)));
             //DataClassification = ToBeClassified;
-
         }
+        
     }
     keys
     {

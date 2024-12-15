@@ -3,7 +3,7 @@ page 50111 "Temp WorkSheetTNP"
     ApplicationArea = All;
     Caption = 'Temp WorkSheet';
     PageType = Worksheet;
-    SourceTable = "Temp Table";
+    SourceTable = "Temp TableTNP";
     //PageType = List;
     SourceTableTemporary = true;
 

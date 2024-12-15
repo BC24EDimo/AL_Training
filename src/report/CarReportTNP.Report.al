@@ -41,20 +41,20 @@ report 50111 "Car ReportTNP"
             trigger OnAfterGetRecord()
             var
                 HistoryRec: Record HistoryTNP;
-                Found: Boolean;
+                //Found: Boolean;
                 ListOfFoundItems: List of [text];
 
 
             begin
                 if (StrLen(VIN) > 0) then begin
+                    HistoryRec.Reset();
                     HistoryRec.SetFilter(VIN, VIN);
                     HistoryRec.SetRange("Event Type", HistoryRec."Event Type"::Sale);
                     if (HistoryRec.FindSet()) then begin
                         //repeat
                         ListOfFoundItems := HistoryRec.Notes.Split(':');
-                        Message('List of items: %1', ListOfFoundItems.Get(2).trim());
+                        //Message('List of items: %1', ListOfFoundItems.Get(2).trim());
                         //Evaluate(PrevSalesPrice, ListOfFoundItems.Get(2).trim());
-                        //Found := true;
                         PrevSalesPrice := ListOfFoundItems.Get(2).trim();
                         //until found = true;
                     end;
