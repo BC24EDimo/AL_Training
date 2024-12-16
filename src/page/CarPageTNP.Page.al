@@ -180,9 +180,14 @@ page 50100 "Car PageTNP"
                     ProfitTableRec: Record "Profit TableTNP";
                 begin
                     //PopulateTempTable(Rec.VIN);
-                    HistoryRec.Reset();
-                    HistoryRec.SetRange(VIN, Rec.VIN);
-                    Report.Run(50101, true, false, HistoryRec);
+                    if (rec.Sold = false) then
+                        Message('You need to Sold this Vehicle \Before You Cna View Profit Report')
+                    else begin
+                        HistoryRec.Reset();
+                        HistoryRec.SetRange(VIN, Rec.VIN);
+                        Report.Run(50101, true, false, HistoryRec);
+                    end;
+
                 end;
             }
         }
@@ -197,7 +202,7 @@ page 50100 "Car PageTNP"
         //CurrPage.Update();
     end;
 
-     
+
     // procedure PopulateTempTable(vin: Code[20])
     // var
     //     HistoryRec: Record HistoryTNP;
